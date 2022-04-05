@@ -14,7 +14,7 @@ Open Neo4j in browser via link http://localhost:7474/browser/ with
 username: neo4j
 password: admin
 
-## Stream Persib-Visits-Place Data to Neo4j
+## Stream Person-Visits-Place Data to Neo4j
 
 ``` 
 ./run-stream.sh
