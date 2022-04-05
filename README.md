@@ -32,7 +32,7 @@ MERGE (test:Test) ON CREATE SET test.status = 'positive'
 MERGE (person:Person {id: '1300f777'})
 CREATE (test)-[:POSITIVE]->(person)
 
-### Find a group of people with potential risk and push them back to Kafka.
+### Find a group of people with potential risk and push them back to Kafka
 
 Here id is same as above.
 
