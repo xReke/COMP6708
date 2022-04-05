@@ -44,7 +44,7 @@ CALL streams.publish('risks', { id:p2.id}) RETURN null
 
 ## Do testing
 
-Simulate the testing procedure. Do testing on the people with potential risk and send those test positive back to Neo4j and update the graph.
+Simulate the covid-19 testing procedure. Do testing on the people with potential risk and send those test positive back to Neo4j and update the graph.
 
 ``` 
 ./testing.sh
