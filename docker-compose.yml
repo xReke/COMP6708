@@ -1,0 +1,51 @@
+version: '3'
+services:
+  neo4j:
+    image: neo4j:3.5.8-enterprise
+    hostname: klinks
+    container_name: klinks
+    ports:
+    - "7474:7474"
+    - "7687:7687"
+    volumes:
+    - $PWD/plugins:/plugins
+    environment:
+      NEO4J_dbms_logs_query_threshold: 0s
+      NEO4J_dbms_logs_query_enabled: "true"
+      NEO4J_cypher_lenient__create__relationship: "true"
+      NEO4J_apoc_trigger_enabled: "true"
+      NEO4J_dbms_security_procedures_unrestricted: "apoc.*,algo.*"
+      NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
+      NEO4J_dbms_logs_debug_level: DEBUG
+      NEO4J_dbms_memory_heap_max__size: 2G
+      NEO4J_dbms_memory_heap_initial__size: 1G
+      NEO4J_dbms_memory_pagecache_size: 1G
+      NEO4J_AUTH: neo4j/admin
+      NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
+      NEO4J_kafka_group_id: p2
+      NEO4J_streams_sink_topic_cypher_visited: "
+        MERGE (person:Person {id: event.person_id}) ON CREATE SET person.gender = event.person_gender, person.age = event.person_age
+        MERGE (place:Place {id: event.place_name}) ON CREATE SET place.district = event.place_district
+        CREATE (person)-[:VISITED { when: event.date }]->(place)
+      "
+      NEO4J_streams_sink_topic_cypher_positive: "
+        MERGE (person:Person {id: event.personID})
+        MERGE (n:Test)
+        CREATE (n)-[:POSITIVE]->(person)
+      "
+      NEO4J_streams_sink_enabled: "true"
+      NEO4J_streams_procedures_enabled: "true"
+      NEO4J_streams_source_enabled: "false"
+      # CONFLUENT CLOUD CONFIGURATION
+      # Use this block of configuration items out if you're using Confluent Cloud
+      NEO4J_kafka_ssl_endpoint_identification_algorithm: https
+      NEO4J_kafka_sasl_mechanism: PLAIN
+      NEO4J_kafka_request_timeout_ms: 20000
+      NEO4J_kafka_bootstrap_servers: pkc-6ojv2.us-west4.gcp.confluent.cloud:9092
+      NEO4J_kafka_retry_backoff_ms: 500
+      NEO4J_kafka_sasl_jaas_config: org.apache.kafka.common.security.plain.PlainLoginModule required username="WFCY4SCFXW5TN5UV" password="6rZloayY7Z36RuhcGmEqpHV82Mmrebie9K2ym0UJfORWFdY2B/GhwD5iJmrb9sTF";
+      NEO4J_kafka_security_protocol: SASL_SSL
+      # LOCAL KAFKA CONFIGURATION
+      # Uncomment this block of lines and configure correctly if you're using Kafka locally.
+      #NEO4J_kafka_zookeeper_connect: localhost:2181
+      #NEO4J_kafka_bootstrap_servers: localhost:9092
