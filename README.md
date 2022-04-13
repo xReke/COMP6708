@@ -14,7 +14,7 @@ Open Neo4j in browser via link http://localhost:7474/browser/ with
 username: neo4j
 password: admin
 
-## Stream Persib-Visits-Place Data to Neo4j
+## Stream Person-Visits-Place Data to Neo4j
 
 ``` 
 ./run-stream.sh
@@ -32,7 +32,7 @@ MERGE (test:Test) ON CREATE SET test.status = 'positive'
 MERGE (person:Person {id: '1300f777'})
 CREATE (test)-[:POSITIVE]->(person)
 
-### Find a group of people with potential risk and push them back to Kafka.
+### Find a group of people with potential risk and push them back to Kafka
 
 Here id is same as above.
 
@@ -44,8 +44,8 @@ CALL streams.publish('risks', { id:p2.id}) RETURN null
 
 ## Do testing
 
-Simulate the testing procedure. Do testing on the people with potential risk and send those test positive back to Neo4j and update the graph.
+Simulate the covid-19 testing procedure. Do testing on the people with potential risk and send those test positive back to Neo4j and update the graph.
 
 ``` 
-./testing.sh
+./run-testing.sh
 ```
